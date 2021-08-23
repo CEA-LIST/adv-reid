@@ -17,7 +17,6 @@ import os
 from collections import defaultdict
 
 parser = argparse.ArgumentParser(description='PyTorch Re-id Training')
-parser.add_argument('output_folder', type=str, help="Folder where the checkpoints will be saved")
 parser.add_argument('dataset_folder', type=str, help='Folder where the datasets are')
 parser.add_argument('--dataset', default='market', type=str, help='dataset for training')
 parser.add_argument('--lr', default=0.001, type=float, help='learning rate')
@@ -98,6 +97,7 @@ gallery_loader = torch.utils.data.DataLoader(gallery_dataset, batch_size=args.ba
 probe_loader = torch.utils.data.DataLoader(probe_dataset, batch_size=args.batch_size,
                                             shuffle=False, num_workers=4, pin_memory=True)
 
+
 if args.classif:
     if args.dataset == 'market':
         num_classes = 751
@@ -141,8 +141,8 @@ writer = SummaryWriter(comment=args.comment)
 
 for epoch in range(start_epoch, start_epoch+args.n_epoch):
     print("\nEpoch {}".format(epoch))
-    scheduler.step()
     model, train_loss = train(model, criterion, optimizer, train_loader, device, writer, epoch, triplet=args.triplet, classif=args.classif, adv_training=args.adv, sma=args.sma, pushing_guides=idx, pull=args.pull, transforms=False)
+    scheduler.step()
     writer.add_scalar("Training loss", train_loss, epoch)
     r1, r5, r10, MAP, gallery_features, gallery_ids = eval_performance(model, gallery_loader, probe_loader, device, triplet=args.triplet, classif=args.classif, cosine=False, transforms=True)
     print("map : {}, r1 : {}, r5 : {}, r10 : {}".format(MAP, r1, r5, r10))

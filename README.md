@@ -1,6 +1,6 @@
 # Vulnerability of Person Re-Identification Models to Metric Adversarial Attacks
 
-This repository contains the reference source code for the paper [Vulnerability of Person Re-Identification Models to Metric Adversarial Attacks](http://openaccess.thecvf.com/content_CVPRW_2020/papers/w47/Bouniot_Vulnerability_of_Person_Re-Identification_Models_to_Metric_Adversarial_Attacks_CVPRW_2020_paper.pdf) (CVPRW'20). For more information, please check out our paper and our presentation. 
+This repository contains the reference source code for the paper [Vulnerability of Person Re-Identification Models to Metric Adversarial Attacks](http://openaccess.thecvf.com/content_CVPRW_2020/papers/w47/Bouniot_Vulnerability_of_Person_Re-Identification_Models_to_Metric_Adversarial_Attacks_CVPRW_2020_paper.pdf) (CVPRW'20). For more information, please check out our paper, the [presentation](https://www.youtube.com/watch?v=X0YRPxzOMR0) or the [associated blogpost](https://qbouniot.github.io/article/2020/05/06/adv_reid.html). 
 
 As classification attacks are not applicable to re-identification, we propose different possible attacks on metric learning models depending on the number and type of guides available. Two particularly effective attacks stand out. To defend against these attacks, we adapt the adversarial training protocol for metric learning. Let us guide you !
 
@@ -10,19 +10,19 @@ As classification attacks are not applicable to re-identification, we propose di
 
 - python==3.6+
 - torch==1.5.0
+- torchvision==0.6.0
 - advertorch==0.2.0
 
-You can run `pip install -r requirements.txt` to install required packages.
+You can run `pip install -r requirements.txt` to install required packages or `conda env create -f environment.yml` to create a new environment with the required packages installed.
 
-We use *Market1501* and *DukeMTMC-reid* datasets, you must download them beforehand. 
+As we use *Market1501* and *DukeMTMC-reid* datasets for our experiments, you must download them beforehand. 
 
 ## Training
 
-To train a Classification model on dataset Duke, run:
+To train a Classification model on dataset *DukeMTMC-reid*, run:
 
 ```sh
 python train.py \
-         <output_folder> \
          <dataset_folder> \
          --dataset 'duke' \
          --lr 0.00035 \
@@ -34,11 +34,10 @@ python train.py \
          --pretrained 
 ```
 
-For a Triplet model on dataset market, run:
+For a Triplet model on dataset *Market1501*, run:
 
 ```sh
 python train.py \
-        <output_folder> \
         <dataset_folder> \
         --dataset 'market' \
         --lr 0.0003 \
@@ -54,13 +53,15 @@ python train.py \
         --id_batch
 ```
 
+By default, the checkpoints of the trained models are saved in the folder `./models/checkpoints/`.
+
 ## Evaluating
 
 To evaluate a Classification model under attack, run:
 
 ```sh
 python gen_adv.py \
-        <output_folder> \
+        <checkpoints_folder> \
         <dataset_folder> \
         <checkpoint_name> \
         --dataset <dataset> \
@@ -71,12 +72,11 @@ python gen_adv.py \
 
 ## Defending
 
-Before training a defended model, run `sort_dataset.py` to create a sorted dataset from which sample the guides.
+Before training a defended model, run `sort_dataset.py` to create a sorted dataset from which the guides are sampled.  
 Then, to train a Classification model using GOAT with FNA, run:
 
 ```sh
 python train.py \
-        <output_folder> \
         <dataset_folder> \
         --dataset <dataset> \
         --lr 0.00035 \
@@ -87,7 +87,7 @@ python train.py \
         --classif \
         --pretrained \
         --adv \
-        --inter \
+        --push \
         --pull
 ```
 

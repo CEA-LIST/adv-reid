@@ -2,10 +2,12 @@
 # @author CEA-LIST/DIASI/SIALV/LVA <quentin.bouniot@cea.fr>
 # @license CECILL
 
+import torch
 import torch.nn as nn
 import math
 import torch.utils.model_zoo as model_zoo
 from pathlib import Path
+import os
 
 __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
            'resnet152']
@@ -195,8 +197,10 @@ def resnet50(pretrained=False, **kwargs):
     """
     model = ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet50']))
-        # model.load_state_dict(torch.load(model_path['resnet50']))
+        if os.path.exists(model_path['resnet50']):
+            model.load_state_dict(torch.load(model_path['resnet50']))
+        else:
+            model.load_state_dict(model_zoo.load_url(model_urls['resnet50']))
     return model
 
 

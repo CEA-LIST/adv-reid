@@ -36,13 +36,12 @@ class Triplet(nn.Module):
         backbone.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.backbone = backbone
         
-        self.fc = nn.Sequential(
-                nn.BatchNorm1d(self.backbone.fc.in_features),
-                nn.ReLU(),
-                nn.Linear(self.backbone.fc.in_features, embedding_size))
+        self.backbone.fc = nn.Sequential(
+                            nn.BatchNorm1d(self.backbone.fc.in_features),
+                            nn.ReLU(),
+                            nn.Linear(self.backbone.fc.in_features, embedding_size))
         
     def forward(self, x):
         x = self.backbone(x)
-        x = self.fc(x)
         
         return x
