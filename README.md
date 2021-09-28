@@ -91,6 +91,15 @@ python train.py \
         --pull
 ```
 
+## Pretrained Defended Models
+
+You can download the weights of the pretrained defended models with **GOAT** here :
+
+| Training Dataset | Pushing guides | Pulling guides | download link |
+|------------------|----------------|----------------|---------------|
+| Duke             | 0 <br> 4         | 0 <br> 1          | [duke_goat_classif_sma.th](https://drive.google.com/file/d/1m3HVYoZe7ldOan_kmWekXGec50qKiR9U/view?usp=sharing) <br>  [duke_goat_classif.th](https://drive.google.com/file/d/19SsAFrOS2SFubfbDrnJmYj5J-1vrB_n9/view?usp=sharing)         |
+| Market           | 0 <br> 4         | 0 <br> 1          |  [market_goat_classif_sma.th](https://drive.google.com/file/d/1CBcN5CEiDCYA40UyI5bUI8Go_bgNIt2j/view?usp=sharing) <br> [market_goat_classif.th](https://drive.google.com/file/d/1eBsUIPulzgFCBw9iIeYLcRa8OKhbg4mx/view?usp=sharing)           |
+
 # License
 
 This repository is released under the [CeCILL](LICENSE.txt) license, a free software license
